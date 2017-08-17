@@ -256,10 +256,24 @@ static char tkRemoteControlWindowControllerKey;     //  自动回复窗口的关
         //                }
         ContactStorage *contactStorage = [[objc_getClass("MMServiceCenter") defaultCenter] getService:objc_getClass("ContactStorage")];
         WCContactData *selfContact = [contactStorage GetSelfContact];
+        
 
+//        NSAlert *alert = [[NSAlert alloc]init];
+//        alert.messageText = msg.fromUserName.string;
+//        alert.informativeText = selfContact.m_nsUsrName;
+//        
+//        
+//        [alert runModal];//[NSAlert beginSheetModalForWindow]
+        
         NSString *keyword = [[TKWeChatPluginConfig sharedConfig] autoReplyKeyword];
-        if ([keyword isEqualToString:@""] || [msg.content.string isEqualToString:keyword]) {
+        if ([keyword isEqualToString:@""] || [msg.content.string isEqualToString:keyword] ||[msg.content.string isEqualToString:@"垃圾"]||[msg.content.string isEqualToString:@"滚"]) {
             [service SendTextMessage:selfContact.m_nsUsrName toUsrName:msg.fromUserName.string msgText:[[TKWeChatPluginConfig sharedConfig] autoReplyText] atUserList:nil];
+        }else if( [msg.content.string isEqualToString:@"你好"]||[msg.content.string isEqualToString:@"您好"]||[msg.content.string isEqualToString:@"在"]||[msg.content.string isEqualToString:@"在吗"]) {
+            
+             [service SendTextMessage:selfContact.m_nsUsrName toUsrName:msg.fromUserName.string msgText:@"您好，app开发者为您服务。请问你有什么需要呢" atUserList:nil];
+        }else if([msg.content.string isEqualToString:@"我爱你"]||[msg.content.string isEqualToString:@"我喜欢你"]){
+            [service SendTextMessage:selfContact.m_nsUsrName toUsrName:msg.fromUserName.string msgText:@"我也是哦，日后再说可以吗" atUserList:nil];
+
         }
     }
 }
